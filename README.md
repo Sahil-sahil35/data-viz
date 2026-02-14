@@ -1,3 +1,4 @@
+
 # Interactive Python Data Visualization Course 🐍📊
 
 An interactive web-based course for learning Python data visualization with matplotlib and seaborn. This course runs entirely in the browser using Pyodide - no installation required!
