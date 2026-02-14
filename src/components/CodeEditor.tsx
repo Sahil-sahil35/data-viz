@@ -1,5 +1,5 @@
-import React from 'react';
-import Editor, { OnMount } from '@monaco-editor/react';
+import React, { useRef, useEffect } from 'react';
+import Editor, { OnMount, BeforeMount } from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { Loader2 } from 'lucide-react';
 
@@ -17,13 +17,22 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     height = '400px'
 }) => {
     const { theme } = useTheme();
+    const editorRef = useRef<any>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     // Determine Monaco theme based on next-themes
-    // 'vs-dark' is built-in, 'light' is built-in
     const monacoTheme = theme === 'dark' ? 'vs-dark' : 'light';
 
+    const handleBeforeMount: BeforeMount = (monaco) => {
+        // Try to disable EditContext at the environment level
+        (monaco.editor as any).EditorOptions?.experimentalEditContextEnabled?.defaultValue &&
+            ((monaco.editor as any).EditorOptions.experimentalEditContextEnabled.defaultValue = false);
+    };
+
     const handleEditorDidMount: OnMount = (editor, monaco) => {
-        // Configure editor settings if needed
+        editorRef.current = editor;
+
+        // Configure editor settings
         editor.updateOptions({
             minimap: { enabled: false },
             scrollBeyondLastLine: false,
@@ -36,16 +45,36 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             formatOnPaste: true,
             formatOnType: true,
         });
+
+        // Workaround: Intercept 'a', 's', 'd' keydown events on the editor's DOM
+        // and manually insert the character if the EditContext API drops it
+        const editorDomNode = editor.getDomNode();
+        if (editorDomNode) {
+            editorDomNode.addEventListener('keydown', (e: KeyboardEvent) => {
+                if (['a', 's', 'd'].includes(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                    // Give Monaco a moment to handle it natively
+                    const currentValue = editor.getValue();
+                    setTimeout(() => {
+                        // If the value didn't change, Monaco dropped the keypress
+                        if (editor.getValue() === currentValue) {
+                            // Manually insert the character
+                            editor.trigger('keyboard', 'type', { text: e.key });
+                        }
+                    }, 50);
+                }
+            }, true);
+        }
     };
 
     return (
-        <div className={`relative rounded-lg border overflow-hidden ${theme === 'dark' ? 'border-purple-500/30' : 'border-gray-200'}`}>
+        <div ref={containerRef} className={`relative rounded-lg border overflow-hidden ${theme === 'dark' ? 'border-purple-500/30' : 'border-gray-200'}`}>
             <Editor
                 height={height}
                 language={language}
                 value={code}
                 theme={monacoTheme}
                 onChange={onChange}
+                beforeMount={handleBeforeMount}
                 onMount={handleEditorDidMount}
                 loading={
                     <div className="flex items-center justify-center h-full">
@@ -61,14 +90,15 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                     automaticLayout: true,
                     padding: { top: 16, bottom: 16 },
                     mouseWheelZoom: true,
-                    // Ensure internal keybindings don't block typing
                     tabCompletion: 'on',
                     acceptSuggestionOnEnter: 'on',
                     quickSuggestions: true,
-                }}
+                    experimentalEditContextEnabled: false,
+                } as any}
             />
         </div>
     );
 };
 
 export default CodeEditor;
+

@@ -156,7 +156,6 @@ export default function DataVisualizationCourse() {
 
   const isDark = theme === 'dark'
 
-
   // Mount effect
   useEffect(() => {
     setMounted(true)
