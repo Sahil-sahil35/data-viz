@@ -11,7 +11,9 @@ import {
     Calculator,
     GitBranch,
     List,
-    Target
+    Target,
+    Circle,
+    AlertCircle
 } from 'lucide-react';
 
 export interface Lesson {
@@ -257,10 +259,468 @@ for ...
         }
     },
 
+    // --- Intermediate Python ---
+    {
+        id: 'python-functions',
+        title: '5. Functions',
+        icon: <Terminal className="w-4 h-4" />,
+        description: 'Reusable code blocks',
+        content: {
+            concept: `**Don't Repeat Yourself (DRY).** ♻️
+
+Functions are like mini-programs inside your program. 
+If you need to calculate a tax rate 50 times, you don't write the math 50 times. You write a function *once* and call it 50 times.
+
+**Anatomy:**
+- \`def\`: Tells Python "I'm making a function".
+- \`name()\`: What you call it.
+- \`return\`: The answer it gives back.`,
+            whenToUse: `Use functions when you find yourself copy-pasting code.`,
+            syntax: `def my_function(input):
+    return input * 2`,
+            codeExample: `def greet(name):
+    return "Hello, " + name
+
+# Using it
+message = greet("Alice")
+print(message)
+print(greet("Bob"))`,
+            practice: {
+                task: 'Write a function called `sq` that takes a number `x` and returns `x * x` (x squared). Then print the result of `sq(5)`.',
+                hints: [
+                    'def sq(x):',
+                    'return x * x'
+                ],
+                starterCode: `# Define your function
+def sq(x):
+    # TODO: Return x times x
+    return ...
+
+# Test it
+result = sq(5)
+print(result)`
+            },
+            miniChallenge: {
+                title: 'The Converter',
+                description: 'Write a function `to_seconds(minutes)` that returns the number of seconds in that many minutes.',
+                expectedOutput: '300 (if input is 5)',
+                starterCode: 'def to_seconds(minutes):\n    pass\n\nprint(to_seconds(5))'
+            }
+        }
+    },
+    {
+        id: 'python-dictionaries',
+        title: '6. Dictionaries',
+        icon: <BookOpen className="w-4 h-4" />,
+        description: 'Key-Value pairs',
+        content: {
+            concept: `**Think of a real dictionary.** 📖
+
+You look up a word (Key) to find its definition (Value).
+Arrays/Lists use numbers to find things (Item 0, Item 1).
+Dictionaries use *names* to find things.
+
+\`user = {"name": "Alice", "age": 25}\`
+
+- **Key**: "name"
+- **Value**: "Alice"`,
+            whenToUse: `Use dictionaries when you want to label your data (e.g., storing a user's profile).`,
+            syntax: `my_dict = {"key": "value"}
+print(my_dict["key"])`,
+            codeExample: `phonebook = {
+    "Alice": "555-1234",
+    "Bob": "555-9876"
+}
+
+print(phonebook["Alice"])
+
+# Adding a new one
+phonebook["Charlie"] = "555-0000"
+print(phonebook)`,
+            practice: {
+                task: 'Create a dictionary called `prices` where "apple" is 0.5 and "banana" is 1.0. Print the price of an apple.',
+                hints: [
+                    'prices = {"apple": 0.5, ...}',
+                    'print(prices["apple"])'
+                ],
+                starterCode: `# Create dictionary
+prices = {
+    "apple": 0.5,
+    "banana": 1.0
+}
+
+# TODO: Print price of apple
+`
+            },
+            miniChallenge: {
+                title: 'Inventory Check',
+                description: 'Given `inventory = {"gold": 500, "sword": 1}`. Update the gold to 450 (spent 50) and print the new dictionary.',
+                expectedOutput: '{\'gold\': 450, \'sword\': 1}',
+                starterCode: 'inventory = {"gold": 500, "sword": 1}\n'
+            }
+        }
+    },
+    {
+        id: 'python-tuples-sets',
+        title: '7. Tuples & Sets',
+        icon: <List className="w-4 h-4" />,
+        description: 'Special types of lists',
+        content: {
+            concept: `**Not all lists are created equal.**
+
+1. **Tuple \`("A", "B")\`**: A list you CANNOT change. It's locked.
+   - Use for: Coordinates (x, y), Config settings.
+
+2. **Set \`{"A", "B"}\`**: A bag of unique items. No duplicates allowed!
+   - Use for: Getting unique visitors, finding common items.`,
+            whenToUse: `Use Tuples for fixed data. Use Sets to remove duplicates.`,
+            syntax: `my_tuple = (1, 2)
+my_set = {1, 2, 2, 3} # Becomes {1, 2, 3}`,
+            codeExample: `# Tuple
+point = (10, 20)
+# point[0] = 5  <-- This would cause an Error!
+
+# Set
+numbers = [1, 2, 2, 3, 3, 3]
+unique_numbers = set(numbers)
+print(unique_numbers) # Prints {1, 2, 3}`,
+            practice: {
+                task: 'You have a list `[1, 1, 2, 2, 3]`. Convert it to a set to remove duplicates, then print the set.',
+                hints: [
+                    'set(my_list)'
+                ],
+                starterCode: `nums = [1, 1, 2, 2, 3]
+
+# TODO: Convert to set and print
+`
+            },
+            miniChallenge: {
+                title: 'Common Ground',
+                description: 'Given `a = {1, 2, 3}` and `b = {3, 4, 5}`. Find the number that is in BOTH sets (intersection).',
+                expectedOutput: '{3}',
+                starterCode: 'a = {1, 2, 3}\nb = {3, 4, 5}\n# Hint: Use &'
+            }
+        }
+    },
+    {
+        id: 'python-strings',
+        title: '8. String Mastery',
+        icon: <Terminal className="w-4 h-4" />,
+        description: 'Manipulating text',
+        content: {
+            concept: `**Text is data too.** 🔤
+
+Python is amazing at processing text.
+- **f-strings**: \`f"Hello {name}"\` (Best way to combine variables and text).
+- **Methods**: Strings have superpowers built-in.
+  - \`.upper()\`: MAKE LOUD.
+  - \`.lower()\`: quiet down.
+  - \`.replace("a", "b")\`: Swapping letters.
+  - \`.split(" ")\`: Chopping sentences into list of words.`,
+            whenToUse: `Use string methods to clean up messy text data.`,
+            syntax: `name = "Alice"
+msg = f"Hello {name}"`,
+            codeExample: `text = "   Python is Cool   "
+
+print(text.strip())       # Removes spaces
+print(text.upper())       # PYTHON IS COOL
+print(text.replace("Cool", "Awesome"))
+
+# f-strings (The modern way)
+score = 100
+print(f"Your score is {score} points.")`,
+            practice: {
+                task: 'Given `msg = "I create bugs"`. Replace "bugs" with "features" and print it in ALL CAPS.',
+                hints: [
+                    '.replace(...)',
+                    '.upper()',
+                    'You can chain them: .replace().upper()'
+                ],
+                starterCode: `msg = "I create bugs"
+
+# TODO: Fix the message and yell it
+`
+            },
+            miniChallenge: {
+                title: 'Word Counter',
+                description: 'Count how many words are in the sentence "Data science is fun".',
+                expectedOutput: '4',
+                starterCode: 'sentence = "Data science is fun"\n# Hint: Use .split()'
+            }
+        }
+    },
+    {
+        id: 'python-modules',
+        title: '9. Modules',
+        icon: <Grid className="w-4 h-4" />,
+        description: 'Importing power',
+        content: {
+            concept: `**Shoulders of Giants.** 🦍
+
+You don't have to write everything yourself.
+Python has thousands of "Modules" (Libraries) written by others.
+You access them with \`import\`.
+
+- \`math\`: Fancy calculator (sin, cos, pi).
+- \`random\`: Dice rolling and shuffling.
+- \`datetime\`: Handling time is hard, this makes it easy.`,
+            whenToUse: `Before writing complex logic, checking if a library already does it.`,
+            syntax: `import math
+print(math.pi)`,
+            codeExample: `import math
+import random
+
+print("Pi is:", math.pi)
+print("Root of 16:", math.sqrt(16))
+
+print("Dice roll:", random.randint(1, 6))
+print("Random choice:", random.choice(["Win", "Lose"]))`,
+            practice: {
+                task: 'Import the `random` module. Generate a random number between 1 and 100 and print it.',
+                hints: [
+                    'random.randint(a, b)'
+                ],
+                starterCode: `import random
+
+# TODO: Print random number between 1-100
+`
+            },
+            miniChallenge: {
+                title: 'The Lottery',
+                description: 'Pick 3 random numbers from the list `[10, 20, 30, 40, 50]` (Hint: use `random.sample`).',
+                expectedOutput: 'A list of 3 random numbers.',
+                starterCode: 'import random\nnums = [10, 20, 30, 40, 50]\n'
+            }
+        }
+    },
+
+    // --- Data Analysis (Pandas) ---
+    {
+        id: 'pandas-intro',
+        title: '10. Intro to Pandas',
+        icon: <BarChart3 className="w-4 h-4" />,
+        description: 'Excel on steroids',
+        content: {
+            concept: `**Meet the Data Scientist's Excel.** 🐼
+
+**Pandas** is the most famous library for data.
+It creates objects called **DataFrames**.
+Think of a DataFrame is a programmable Excel spreadsheet.
+- Rows have an index (0, 1, 2...)
+- Columns have names ("Age", "Price").`,
+            whenToUse: `Whenever you have structured data (tables, CSVs).`,
+            syntax: `import pandas as pd
+df = pd.DataFrame(data)`,
+            codeExample: `import pandas as pd
+
+# Creating a simple DataFrame
+data = {
+    "Name": ["Alice", "Bob", "Charlie"],
+    "Age": [25, 30, 35]
+}
+
+df = pd.DataFrame(data)
+print(df)`,
+            practice: {
+                task: 'Create a DataFrame with two columns: "City" (London, Paris) and "Population" (8M, 2M). Print it.',
+                hints: [
+                    'data = {"City": [...], "Population": [...]}'
+                ],
+                starterCode: `import pandas as pd
+
+# TODO: Create and print DataFrame
+`
+            },
+            miniChallenge: {
+                title: 'Series vs Frame',
+                description: 'Print just the "Name" column from the example. (Hint: It works like a dictionary `df["Name"]`).',
+                expectedOutput: 'The list of names.',
+                starterCode: 'import pandas as pd\ndata = {"Name": ["Alice", "Bob"], "Age": [25, 30]}\ndf = pd.DataFrame(data)\n'
+            }
+        }
+    },
+    {
+        id: 'pandas-inspect',
+        title: '11. Reading Data',
+        icon: <BookOpen className="w-4 h-4" />,
+        description: 'Getting to know your data',
+        content: {
+            concept: `**The First Handshake.** 🤝
+
+When you load a huge file, you can't read 1,000,000 rows.
+You need summaries.
+
+- \`df.head()\`: Show me the first 5 rows.
+- \`df.tail()\`: Show me the last 5 rows.
+- \`df.info()\`: Tell me about the columns (Are they numbers? Text? Any missing data?).
+- \`df.describe()\`: Give me the math stats (Mean, Max, Min).`,
+            whenToUse: `Immediately after loading data to verify it looks correct.`,
+            syntax: `df.head()
+df.info()`,
+            codeExample: `import pandas as pd
+# Python-Viz: We've loaded 'iris_data' for you
+df = pd.DataFrame(iris_data)
+
+print("First 3 rows:")
+print(df.head(3))
+
+print("\nStats:")
+print(df.describe())`,
+            practice: {
+                task: 'Print the `info()` of the iris dataset to see what columns we have.',
+                hints: [
+                    'df.info()'
+                ],
+                starterCode: `import pandas as pd
+df = pd.DataFrame(iris_data)
+
+# TODO: Print DataFrame info
+`
+            },
+            miniChallenge: {
+                title: 'The Caboose',
+                description: 'Print the LAST 2 rows of the dataset.',
+                expectedOutput: 'The tail of the dataframe.',
+                starterCode: 'import pandas as pd\ndf = pd.DataFrame(iris_data)\n'
+            }
+        }
+    },
+    {
+        id: 'pandas-select',
+        title: '12. Selecting Data',
+        icon: <Target className="w-4 h-4" />,
+        description: 'Picking specific parts',
+        content: {
+            concept: `**Slicing and Dicing.** 🔪
+
+You rarely need *all* the data.
+- **Select Column**: \`df["ColumnName"]\`
+- **Select Row**: \`df.iloc[0]\` (Integer Location - "Give me row #0")
+- **Select Multiple**: \`df[["Name", "Age"]]\``,
+            whenToUse: `Use when you only care about specific features of the data.`,
+            syntax: `df['col']
+df.iloc[0]`,
+            codeExample: `import pandas as pd
+df = pd.DataFrame(iris_data)
+
+# Get just the species
+print(df["species"].head())
+
+# Get just row #10
+print(df.iloc[10])`,
+            practice: {
+                task: 'Select and print the "sepal_length" column (just the first 5 rows).',
+                hints: [
+                    'df["sepal_length"].head()'
+                ],
+                starterCode: `import pandas as pd
+df = pd.DataFrame(iris_data)
+
+# TODO: Print head of sepal_length
+`
+            },
+            miniChallenge: {
+                title: 'Row Master',
+                description: 'Print the row at index 50.',
+                expectedOutput: 'Data for the 51st flower (index 50).',
+                starterCode: 'import pandas as pd\ndf = pd.DataFrame(iris_data)\n'
+            }
+        }
+    },
+    {
+        id: 'pandas-filter',
+        title: '13. Filtering Data',
+        icon: <Grid className="w-4 h-4" />,
+        description: 'Finding specific rows',
+        content: {
+            concept: `**The Search Engine.** 🔍
+
+This is the most powerful feature.
+"Show me only the flowers that are red."
+"Show me sales greater than $100."
+
+**Syntax**: \`df[ CONDITION ]\`
+e.g., \`df[ df['age'] > 18 ]\``,
+            whenToUse: `Use to zoom in on a subset of data that meets your criteria.`,
+            syntax: `df[df['col'] > 5]`,
+            codeExample: `import pandas as pd
+df = pd.DataFrame(iris_data)
+
+# Find all 'Virginica' flowers
+virginica_flowers = df[df['species'] == 'virginica']
+
+print("Found:", len(virginica_flowers))
+print(virginica_flowers.head())`,
+            practice: {
+                task: 'Filter the data to find rows where `sepal_length` is greater than 7.0. Print how many there are.',
+                hints: [
+                    'big_flowers = df[df["sepal_length"] > 7.0]',
+                    'print(len(big_flowers))'
+                ],
+                starterCode: `import pandas as pd
+df = pd.DataFrame(iris_data)
+
+# TODO: Find sepal_length > 7.0
+`
+            },
+            miniChallenge: {
+                title: 'Complex Query',
+                description: 'Find flowers where `species` is "setosa" AND `petal_width` < 0.2. (Use `&` for AND, and put parentheses around conditions).',
+                expectedOutput: 'A filtered dataframe.',
+                starterCode: 'import pandas as pd\ndf = pd.DataFrame(iris_data)\n# df[(cond1) & (cond2)]'
+            }
+        }
+    },
+    {
+        id: 'pandas-groupby',
+        title: '14. Data Aggregation',
+        icon: <Calculator className="w-4 h-4" />,
+        description: 'Summarizing groups',
+        content: {
+            concept: `**The Pivot Table.** 🏗️
+
+Raw data is messy. Summaries are clean.
+**Groupby** lets you squash rows together based on a category.
+
+"Group by *Species*, then give me the *Mean* of the numbers."
+- \`.mean()\`: Average
+- \`.sum()\`: Total
+- \`.count()\`: Number of items
+- \`.max() / .min()\`: Extremes`,
+            whenToUse: `Use to compare categories (e.g., Average test score by Class).`,
+            syntax: `df.groupby('category').mean()`,
+            codeExample: `import pandas as pd
+df = pd.DataFrame(iris_data)
+
+# Average measurements for each species
+print(df.groupby('species').mean())
+
+# Count items in each species
+print(df.groupby('species').count())`,
+            practice: {
+                task: 'Calculate and print the MAXIMUM `sepal_width` for each species.',
+                hints: [
+                    'df.groupby("species")["sepal_width"].max()'
+                ],
+                starterCode: `import pandas as pd
+df = pd.DataFrame(iris_data)
+
+# TODO: Group by species and find max sepal_width
+`
+            },
+            miniChallenge: {
+                title: 'The Sum of All Parts',
+                description: 'Find the SUM of all numerical columns grouped by species.',
+                expectedOutput: 'Table of sums.',
+                starterCode: 'import pandas as pd\ndf = pd.DataFrame(iris_data)\n'
+            }
+        }
+    },
+
     // --- Visualization Lessons ---
     {
         id: 'viz-intro',
-        title: '5. Intro to Visuals',
+        title: '15. Intro to Visuals',
         icon: <BookOpen className="w-4 h-4" />,
         description: 'Drawing basic lines',
         content: {
@@ -323,7 +783,7 @@ plt.show()`
     },
     {
         id: 'scatter-plots',
-        title: '6. Scatter Plots',
+        title: '16. Scatter Plots',
         icon: <ScatterChart className="w-4 h-4" />,
         description: 'X vs Y Relationships',
         content: {
@@ -380,7 +840,7 @@ plt.show()`
     },
     {
         id: 'histograms',
-        title: '7. Histograms',
+        title: '17. Histograms',
         icon: <BarChart3 className="w-4 h-4" />,
         description: 'Distribution of one variable',
         content: {
@@ -438,7 +898,7 @@ plt.show()`
     },
     {
         id: 'bar-charts',
-        title: '8. Bar Charts',
+        title: '18. Bar Charts',
         icon: <BarChart3 className="w-4 h-4" />,
         description: 'Counting categories',
         content: {
@@ -495,7 +955,7 @@ plt.show()`
     },
     {
         id: 'box-plots',
-        title: '9. Box Plots',
+        title: '19. Box Plots',
         icon: <BarChart3 className="w-4 h-4" />,
         description: 'Comparing Groups',
         content: {
@@ -554,7 +1014,7 @@ plt.show()`
     },
     {
         id: 'violin-plots',
-        title: '10. Violin Plots',
+        title: '20. Violin Plots',
         icon: <BarChart3 className="w-4 h-4" />,
         description: 'Box plot + Histogram',
         content: {
@@ -611,7 +1071,7 @@ plt.show()`
     },
     {
         id: 'heatmaps',
-        title: '11. Heatmaps',
+        title: '21. Heatmaps',
         icon: <Grid className="w-4 h-4" />,
         description: 'Color-coded Data',
         content: {
@@ -674,7 +1134,7 @@ plt.show()`
     },
     {
         id: 'pair-plots',
-        title: '12. Pair Plots',
+        title: '22. Pair Plots',
         icon: <PieChart className="w-4 h-4" />,
         description: 'The Overview',
         content: {
@@ -728,7 +1188,7 @@ plt.show()`
     // --- Challenges ---
     {
         id: '3d-scatter-plots',
-        title: '13. 3D Scatter Plots',
+        title: '23. 3D Scatter Plots',
         icon: <ScatterChart className="w-4 h-4" />,
         description: 'Three dimensions',
         content: {
@@ -795,10 +1255,297 @@ plt.show()`
         }
     },
 
+    // --- New Visualizations ---
+    {
+        id: 'pie-chart',
+        title: '24. Pie Charts',
+        icon: <PieChart className="w-4 h-4" />,
+        description: 'Visualizing proportions',
+        content: {
+            concept: `**THE PIE CHART** 🥧
+
+**Objective:**
+Show how parts make up a whole. Like slicing a pizza!
+
+**Key Concepts:**
+- **Slices**: Each category is a slice.
+- **Size**: Bigger slice = Bigger percentage.
+- **Total**: The whole pie is 100%.
+
+**Use Case:**
+"What is the market share of each browser?"
+"How is my budget divided?"`,
+            whenToUse: `Use when you want to show *proportions* of a whole (must add up to 100%).`,
+            syntax: `plt.pie(values, labels=labels, autopct='%1.1f%%')`,
+            codeExample: `import matplotlib.pyplot as plt
+
+# Data
+sizes = [15, 30, 45, 10]
+labels = ['Frogs', 'Hogs', 'Dogs', 'Logs']
+
+plt.figure(figsize=(5, 5))
+plt.pie(sizes, labels=labels, autopct='%1.1f%%')
+plt.title("Animal Distribution")
+plt.show()`,
+            practice: {
+                task: 'Create a pie chart for the number of species in the Iris dataset (50 each). Labels: Setosa, Versicolor, Virginica.',
+                hints: [
+                    'sizes = [50, 50, 50]',
+                    'labels = ["Setosa", "Versicolor", "Virginica"]'
+                ],
+                starterCode: `import matplotlib.pyplot as plt
+
+sizes = [50, 50, 50]
+labels = ['Setosa', 'Versicolor', 'Virginica']
+
+plt.figure(figsize=(5, 5))
+
+# TODO: Create pie chart
+
+
+plt.title("Species Distribution")
+plt.show()`
+            },
+            miniChallenge: {
+                title: 'The Exploding Pie',
+                description: 'Make the "Versicolor" slice "explode" (pop out) slightly from the pie.',
+                expectedOutput: 'A pie chart with one slice separated.',
+                starterCode: 'import matplotlib.pyplot as plt\n\n'
+            }
+        }
+    },
+    {
+        id: 'bubble-chart',
+        title: '25. Bubble Charts',
+        icon: <Circle className="w-4 h-4" />,
+        description: '3 variables in 2D',
+        content: {
+            concept: `**THE BUBBLE CHART** 🫧
+
+**Objective:**
+Visualize THREE variables on a flat screen.
+1. X-axis (Variable 1)
+2. Y-axis (Variable 2)
+3. Bubble Size (Variable 3)
+
+**Analogy:**
+Imagine a map of cities.
+- Location (X, Y)
+- Population (Size of the circle)
+
+**Key:**
+The *area* of the circle usually represents the value.`,
+            whenToUse: `Use when you have 3 numeric variables to compare.`,
+            syntax: `plt.scatter(x, y, s=sizes, alpha=0.5)`,
+            codeExample: `import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4]
+y = [10, 20, 25, 30]
+sizes = [100, 200, 500, 1000] # Bubble sizes
+
+plt.figure(figsize=(6, 4))
+plt.scatter(x, y, s=sizes, alpha=0.5)
+plt.show()`,
+            practice: {
+                task: 'Create a bubble plot of `sepal_length` vs `sepal_width`, where size is determined by `petal_width` * 20 (to make them visible).',
+                hints: [
+                    's=df["petal_width"] * 20',
+                    'alpha=0.5 helps see overlaps'
+                ],
+                starterCode: `import matplotlib.pyplot as plt
+import pandas as pd
+df = pd.DataFrame(iris_data)
+
+plt.figure(figsize=(6, 4))
+
+# TODO: Scatter plot with size (s) based on petal_width
+# s = ...
+
+plt.show()`
+            },
+            miniChallenge: {
+                title: 'Color & Size',
+                description: 'Make the bubbles categorized by color (species) AND sized by petal_length.',
+                expectedOutput: 'Multicolor bubbles of varying sizes.',
+                starterCode: 'import matplotlib.pyplot as plt\nimport seaborn as sns\nimport pandas as pd\ndf = pd.DataFrame(iris_data)\n\n'
+            }
+        }
+    },
+    {
+        id: 'stacked-bar',
+        title: '26. Stacked Bar Charts',
+        icon: <BarChart3 className="w-4 h-4" />,
+        description: 'Parts within bars',
+        content: {
+            concept: `**THE STACKED BAR CHART** 🥞
+
+**Objective:**
+Compare totals AND the composition of those totals.
+
+**Analogy:**
+A stack of pancakes. The whole stack height matters, but the flavor of each pancake in the stack matters too.
+
+**Use Case:**
+"Total sales per quarter, broken down by Product A, B, and C."`,
+            whenToUse: `Use to show total amount and sub-group breakdown simultaneously.`,
+            syntax: `plt.bar(x, y1, label='A')
+plt.bar(x, y2, bottom=y1, label='B')`,
+            codeExample: `import matplotlib.pyplot as plt
+
+categories = ['Q1', 'Q2', 'Q3']
+product_a = [10, 15, 20]
+product_b = [5, 10, 8]
+
+plt.figure(figsize=(6, 4))
+
+# First bar
+plt.bar(categories, product_a, label='Product A')
+
+# Second bar (stacked on top of A)
+plt.bar(categories, product_b, bottom=product_a, label='Product B')
+
+plt.legend()
+plt.show()`,
+            practice: {
+                task: 'Create a stacked bar chart. Bottom: [1, 2, 3], Top: [3, 2, 1]. Categories: ["A", "B", "C"].',
+                hints: [
+                    'bottom=[1, 2, 3]'
+                ],
+                starterCode: `import matplotlib.pyplot as plt
+
+cats = ["A", "B", "C"]
+bottoms = [1, 2, 3]
+tops = [3, 2, 1]
+
+plt.figure(figsize=(6, 4))
+
+# TODO: Create stacked bars
+
+
+plt.legend(["Bottom", "Top"])
+plt.show()`
+            },
+            miniChallenge: {
+                title: '100% Stacked',
+                description: 'Create two bars that are both height 100. Bar 1: 20/80 split. Bar 2: 50/50 split.',
+                expectedOutput: 'Two bars of equal height with different internal divisions.',
+                starterCode: 'import matplotlib.pyplot as plt\n\n'
+            }
+        }
+    },
+    {
+        id: 'area-chart',
+        title: '27. Area Charts',
+        icon: <LineChart className="w-4 h-4" />,
+        description: 'Volume over time',
+        content: {
+            concept: `**THE AREA CHART** 🏔️
+
+**Objective:**
+Show how a quantitative value changes over time, emphasizing the *volume* or magnitude.
+
+**Visual:**
+Like a Line Chart, but the area below the line is filled with color.
+
+**Use Case:**
+"Cumulative rainfall over a year."
+"Total users on the platform over time."`,
+            whenToUse: `Use to emphasize magnitude of change over time.`,
+            syntax: `plt.fill_between(x, y)`,
+            codeExample: `import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4, 5]
+y = [1, 4, 9, 16, 25]
+
+plt.figure(figsize=(6, 4))
+plt.plot(x, y, color="skyblue")
+plt.fill_between(x, y, color="skyblue", alpha=0.4)
+plt.show()`,
+            practice: {
+                task: 'Create an area chart for values [10, 15, 7, 20, 25]. Use color "orange".',
+                hints: [
+                    'plt.fill_between(x, y, ...)'
+                ],
+                starterCode: `import matplotlib.pyplot as plt
+
+y = [10, 15, 7, 20, 25]
+x = range(len(y))
+
+plt.figure(figsize=(6, 4))
+
+# TODO: Plot and fill between
+
+
+plt.show()`
+            },
+            miniChallenge: {
+                title: 'Sandwich Chart',
+                description: 'Fill the area *between* two lines: y1=[1,1,1] and y2=[3,3,3].',
+                expectedOutput: 'A filled rectangular band.',
+                starterCode: 'import matplotlib.pyplot as plt\n\n'
+            }
+        }
+    },
+    {
+        id: 'error-bars',
+        title: '28. Error Bars',
+        icon: <AlertCircle className="w-4 h-4" />,
+        description: 'Visualizing uncertainty',
+        content: {
+            concept: `**ERROR BARS** 📏
+
+**Objective:**
+Science isn't perfect. Measurements have errors. Error bars show the *range* of uncertainty.
+
+**Visual:**
+A "whisker" extending up and down from a data point.
+
+**Key:**
+- **Short Bar**: High confidence (Precise).
+- **Long Bar**: Low confidence (Uncertain).`,
+            whenToUse: `Use when plotting means/averages to show the spread or standard deviation.`,
+            syntax: `plt.errorbar(x, y, yerr=errors, fmt='o')`,
+            codeExample: `import matplotlib.pyplot as plt
+
+x = ['Group A', 'Group B']
+means = [10, 15]
+errors = [1, 5] # Standard deviation
+
+plt.figure(figsize=(6, 4))
+plt.errorbar(x, means, yerr=errors, fmt='o', capsize=5)
+plt.ylim(0, 25)
+plt.show()`,
+            practice: {
+                task: 'Plot points [1, 2, 3] with values [5, 5, 5] and error bars [0.5, 1.0, 2.0]. ',
+                hints: [
+                    'yerr=[0.5, 1.0, 2.0]'
+                ],
+                starterCode: `import matplotlib.pyplot as plt
+
+x = [1, 2, 3]
+y = [5, 5, 5]
+errors = [0.5, 1.0, 2.0]
+
+plt.figure(figsize=(6, 4))
+
+# TODO: Error bar plot
+
+
+plt.show()`
+            },
+            miniChallenge: {
+                title: 'Rising Uncertainty',
+                description: 'Plot a line that goes UP, but the error bars also get BIGGER as it goes up.',
+                expectedOutput: 'A rising line with increasingly large whiskers.',
+                starterCode: 'import matplotlib.pyplot as plt\n\n'
+            }
+        }
+    },
+
     // --- Challenges ---
     {
         id: 'challenge-1',
-        title: '14. Challenge: Analysis',
+        title: '29. Challenge: Analysis',
         icon: <Target className="w-4 h-4" />,
         description: 'Test your skills',
         content: {
@@ -855,7 +1602,7 @@ plt.show()`
     },
     {
         id: 'challenge-2',
-        title: '15. Challenge: Dashboard',
+        title: '30. Challenge: Dashboard',
         icon: <Trophy className="w-4 h-4" />,
         description: 'The Final Exam',
         content: {
